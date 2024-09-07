@@ -1,64 +1,14 @@
-"use client"
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useSearchParams } from 'next/navigation';
+// app/(auth)/verification/page.tsx
 import { Suspense } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-const Verification = () => {
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')
-  const [isVerified, setIsVerified] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  console.log(token);
+import Verification from '@/components/Verification';// Adjust the import path as needed
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      if (!token) return;
-
-      try {
-        const response = await fetch('/api/verify-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token }),
-        });
-
-        if (response.ok) {
-          setIsVerified(true);
-        } else {
-          throw new Error('Failed to verify email');
-        }
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    verifyToken();
-  }, [token]);
-
+export default function VerificationPage() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <div className='w-full flex flex-col items-center justify-center gap-4 h-screen'>
-        <Image src='/hippo-email-sent.png' alt='email-sent' width={200} height={500} />
-        {loading ? (
-          <p>Loading...</p>
-        ) : isVerified ? (
-          <>
-            <h3>You are all set</h3>
-            <p className='text-xs text-slate-600'>Thank you for verifying your account</p>
-            <Link href='/sign-in'><Button className='w-[200px]'>Sign In</Button></Link>
-          </>
-        ) : (
-          <p className='text-xs text-red-600'>{error || 'Verification failed. Please try again later.'}</p>
-        )}
-      </div>
+      <Verification />
     </Suspense>
   );
-};
+}
 
-export default Verification;
+
+
