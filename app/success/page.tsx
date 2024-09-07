@@ -4,11 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { ProductType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 interface T extends ProductType {
   userEmail?: string;
 }
-const page = () => {
+const Success = () => {
   const router = useRouter()
   const [products, setProducts] = useState<T[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -47,7 +46,7 @@ const page = () => {
     <div className='w-full p-12 flex flex-col gap-4'>
       <p className='text-xs text-blue-500'>order successfull</p>
       <h1 className='text-3xl font-bold'>Thanks for ordering</h1>
-      <p className='text-xs text-slate-800'>your order was processed and your assets are available to download below. we've sent your receipt and order detailes to <span className="font-semibold">{user}</span></p>
+      <p className='text-xs text-slate-800'>your order was processed and your assets are available to download below. we have sent your receipt and order detailes to <span className="font-semibold">{user}</span></p>
       <div className='w-[600px] h-[300px] overflow-y-scroll mt-[80px]'>
         {products.map((product: any) => (
           <div key={product._id} className='w-full h-[80px] flex justify-between'>
@@ -97,4 +96,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Success

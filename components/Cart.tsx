@@ -98,7 +98,7 @@ const Cart = ({ open, onClose }: CartProps) => {
                         <h4> cart items:</h4>
                         <div className='w-full h-[300px] overflow-y-scroll mt-4'>
                             {products && products.map((product: any) => (
-                                <div className='w-full h-[80px] flex justify-between'>
+                                <div className='w-full h-[80px] flex justify-between' key={product._id}>
                                     <div className='w-[250px] h-full flex gap-3 items-center'>
                                         <div className="h-full">
                                             <Image src={product.images[0]} alt="product" height={100} width={75} className='w-[60px] h-[60px] rounded-md' />

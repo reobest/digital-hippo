@@ -17,12 +17,13 @@ interface ProductType {
         price: string,
         category?: string,
         images: string[],
-    }
+    },
+    key?:string;
 }
-const Product = ({ product }: ProductType) => {
+const Product = ({ product , key }: ProductType) => {
     const { _id, name, images, price, category } = product
     return (
-        <div key={_id} className='w-[150px] h-[300px] flex flex-col space-y-2'>
+        <div key={key} className='w-[150px] h-[300px] flex flex-col space-y-2'>
             <Carousel className="w-[150px] max-w-xs h-[120px] group">
                 <CarouselContent className='h-[120px] w-[150px]'>
                     {product?.images.map((image: string, index: number) => (

@@ -40,7 +40,7 @@ const FourProducts = () => {
             </div>
             <div className='w-full flex justify-center gap-5'>
                 {products && products?.map((product: ProductType) => {
-                    return <Product product={product} />
+                    return <Product product={product} key={product._id} />
                 })}
             </div>
         </div>
