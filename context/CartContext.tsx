@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { createContext } from 'react'
 import { ProductType } from '@/lib/types';
 
@@ -13,9 +13,17 @@ interface CartContextType {
 }
 const cartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-    const email = localStorage.getItem("email")
+    const [email, setEmail] = useState<string | null>(null);
     const [cartChanged,setCartChanged] = useState<boolean>(false)
     const [cart, setCart] = useState<ProductType[]>([])
+
+    useEffect(() => {
+        // Check if `localStorage` is available (i.e., we are in the browser)
+        if (typeof window !== 'undefined') {
+            const storedEmail = localStorage.getItem('email');
+            setEmail(storedEmail);
+        }
+    }, []);   
     const addToCart = async (product: ProductType) => {
         const isEmail = product.userEmail == email;
         if (email ) {
