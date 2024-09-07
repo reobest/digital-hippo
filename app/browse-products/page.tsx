@@ -23,7 +23,7 @@ const BrowseProducts = () => {
     return (
         <div className='w-full p-6 flex flex-wrap gap-5'>
             {Products && Products?.map((product: ProductType) => {
-                return <Product product={product} />
+                return <Product product={product} key={product._id} />
             })}
         </div>
     )

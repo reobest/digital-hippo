@@ -47,7 +47,7 @@ console.log(token);
         <p>Loading...</p>
       ) : isVerified ? (
         <>
-          <h3>You're all set</h3>
+          <h3>You are all set</h3>
           <p className='text-xs text-slate-600'>Thank you for verifying your account</p>
           <Link href='/sign-in'><Button className='w-[200px]'>Sign In</Button></Link>
         </>

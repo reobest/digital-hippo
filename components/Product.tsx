@@ -9,6 +9,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import Link from 'next/link'
+import Image from 'next/image'
 interface ProductType {
     product: {
         _id: string,
@@ -30,7 +31,7 @@ const Product = ({ product , key }: ProductType) => {
                         <CarouselItem key={index}>
                             <div>
                                 <Card>
-                                    <img className='w-[150px] h-[130px] rounded-md' src={image} alt="image" />
+                                    <Image width={150} height={150} className='w-[150px] h-[130px] rounded-md' src={image} alt="image" />
                                 </Card>
                             </div>
                         </CarouselItem>
