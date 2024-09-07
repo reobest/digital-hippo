@@ -12,7 +12,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useRouter ,useSearchParams } from "next/navigation"
+import { useRouter  } from "next/navigation"
 import { Input } from "@/components/ui/input"
 const formSchema = z.object({
     email: z.string().min(2).max(50),
@@ -20,7 +20,6 @@ const formSchema = z.object({
 })
 const SignIn= () => {
     const router  = useRouter()
-    const searchParams = useSearchParams()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
