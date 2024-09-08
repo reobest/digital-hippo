@@ -5,6 +5,7 @@ const express = require('express');
 const next = require('next');
 const cors = require('cors');
 const path = require('path')
+const { v2: cloudinary } = require('cloudinary');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer');
@@ -14,6 +15,12 @@ const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const MONGODB_Uri = process.env.MONGODB_URI;
 console.log(process.env.MONGODB_URI);
+/////////////////////////////////////
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 ///////////////////////////////////////
 const connectDB = async () => {
@@ -39,7 +46,7 @@ const productSchema = new mongoose.Schema({
   category: String,
   userEmail: String,
   addToCart: Boolean,
-  quantity:Number,
+  quantity: Number,
   images: [{ type: String }]
 });
 
@@ -101,15 +108,15 @@ app.prepare().then(() => {
     const { quantity, id } = req.body;
     try {
       const product = await Product.findById(id);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        const newQuantity = (product.quantity || 1) + quantity;
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      const newQuantity = (product.quantity || 1) + quantity;
       const result = await Product.updateOne(
         { _id: id },
         { $set: { quantity: newQuantity } }
       );
-      res.status(200).json({ message: 'Quantity updated', messeage:"updated successfully" });
+      res.status(200).json({ message: 'Quantity updated', messeage: "updated successfully" });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -155,17 +162,22 @@ app.prepare().then(() => {
     const imageUrls = images.map(file => `http://localhost:3000/uploads/${file.filename}`);
 
     try {
+      const uploadPromises = images.map(file => {
+        return cloudinary.uploader.upload(file.path);
+      });
+      const uploadResults = await Promise.all(uploadPromises);
+      const imageUrlS = uploadResults.map(result => result.secure_url);
       const newProduct = new Product({
         name,
         productDetails,
         price,
         category,
         userEmail,
-        images: imageUrls  // Store file names in MongoDB
+        images: imageUrlS  // Store file names in MongoDB
       });
 
       await newProduct.save();
-      res.status(200).json({ message: 'Product added successfully', data: newProduct });
+      res.status(200).json({ message: 'Product added successfully', data: newProduct,imageUrlS });
     } catch (error) {
       console.error('Error adding product:', error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -238,36 +250,36 @@ app.prepare().then(() => {
     }
 
   })
-  server.get('/api/clearcart',async(req,res) => {
+  server.get('/api/clearcart', async (req, res) => {
     try {
       const result = await Product.updateMany(
-        { addToCart: true }, 
-        { $set: { addToCart: false,quantity:1 } } 
+        { addToCart: true },
+        { $set: { addToCart: false, quantity: 1 } }
       );
       res.status(200).json({ message: 'Cart cleared', count: result.nModified });
     } catch (error) {
       console.log(error);
-      res.status(500).json({message:"Internal Server Error"});
-      
+      res.status(500).json({ message: "Internal Server Error" });
+
     }
   })
-  server.post('/api/removefromcart',async(req,res) => {
+  server.post('/api/removefromcart', async (req, res) => {
     const { id } = req.body;
-  try {
-    const result = await Product.updateOne(
-      { _id: id },
-      { $set: { addToCart: false , quantity : 1 } }
-    );
+    try {
+      const result = await Product.updateOne(
+        { _id: id },
+        { $set: { addToCart: false, quantity: 1 } }
+      );
 
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ message: 'Product not found' });
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+
+      res.status(200).json({ message: 'Product removed from cart' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
-
-    res.status(200).json({ message: 'Product removed from cart' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
   })
 
   server.post('/api/signin', async (req, res) => {
@@ -366,36 +378,36 @@ app.prepare().then(() => {
     }
   });
 
-server.post('/api/create-payment-intent', async (req, res) => {
-  try {
-      const { products ,amount } = req.body; // Amount in cents
+  server.post('/api/create-payment-intent', async (req, res) => {
+    try {
+      const { products, amount } = req.body; // Amount in cents
       const LineItems = products.map((product) => (
         {
-          price_data:{
+          price_data: {
             currency: 'usd',
-            product_data:{
-              name:product.name,
-              images:[product.images[0]],
+            product_data: {
+              name: product.name,
+              images: [product.images[0]],
             },
-            unit_amount:amount
+            unit_amount: amount
           },
-          quantity:1,
+          quantity: 1,
         }
       ))
       const session = await stripe.checkout.sessions.create({
-          line_items:LineItems,
-          mode:"payment",
-          payment_method_types: ['card'],
-          success_url:"http://localhost:3000/success",
-          cancel_url:"http://localhost:3000/cancel",
+        line_items: LineItems,
+        mode: "payment",
+        payment_method_types: ['card'],
+        success_url: "http://localhost:3000/success",
+        cancel_url: "http://localhost:3000/cancel",
       });
 
-      res.status(200).json({url: session.url });
-  } catch (error) {
+      res.status(200).json({ url: session.url });
+    } catch (error) {
       console.error('Error creating payment intent:', error);
       res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
+    }
+  });
 
 
   server.all('*', (req, res) => {
