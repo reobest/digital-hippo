@@ -17,12 +17,13 @@ const FourProducts = () => {
         const fetchProdects = async () => {
             for (const port of ports) {
                 try {
-                    const response = await fetch(`http://localhost:10000/api/getproducts`, {
+                    const response = await fetch(`http://localhost:${port}/api/getproducts`, {
                         method: 'GET'
                     })
                     if (response.ok) {
                         const data = await response.json()
                         setProducts(data.products)
+                        break
                     }
                     else {
                         console.error('Failed to fetch products');
