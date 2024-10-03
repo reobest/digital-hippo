@@ -11,7 +11,7 @@ interface ProductType {
     images: string[],
 }
 const FourProducts = () => {
-    const ports = [3000, 10000];
+    const ports = ['http://localhost:/10000/api/getproducts','http://localhost:3000/api/getproducts','https://digital-hippo-lc7e.onrender.com/api/getproducts',];
     const [products, setProducts] = useState([])
     useEffect(() => {
         const fetchProdects = async () => {
