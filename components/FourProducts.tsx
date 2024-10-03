@@ -17,7 +17,7 @@ const FourProducts = () => {
         const fetchProdects = async () => {
             for (const port of ports) {
                 try {
-                    const response = await fetch(`http://localhost:${port}/api/getproducts`, {
+                    const response = await fetch(`${port}`, {
                         method: 'GET'
                     })
                     if (response.ok) {
