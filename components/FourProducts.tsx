@@ -11,23 +11,25 @@ interface ProductType {
     images: string[],
 }
 const FourProducts = () => {
-    const Port = 3000 || 10000
+    const ports = [3000, 10000];
     const [products, setProducts] = useState([])
     useEffect(() => {
         const fetchProdects = async () => {
-            try {
-                const response = await fetch(`http://localhost:10000/api/getproducts`, {
-                    method: 'GET'
-                })
-                if (response.ok) {
-                    const data = await response.json()
-                    setProducts(data.products)
-                }
-                else {
-                    console.error('Failed to fetch products');
-                }
-            } catch (error) {
+            for (const port of ports) {
+                try {
+                    const response = await fetch(`http://localhost:10000/api/getproducts`, {
+                        method: 'GET'
+                    })
+                    if (response.ok) {
+                        const data = await response.json()
+                        setProducts(data.products)
+                    }
+                    else {
+                        console.error('Failed to fetch products');
+                    }
+                } catch (error) {
 
+                }
             }
         }
         fetchProdects()
