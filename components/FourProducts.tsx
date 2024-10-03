@@ -11,11 +11,12 @@ interface ProductType {
     images: string[],
 }
 const FourProducts = () => {
+    const Port = 3000 || 10000
     const [products, setProducts] = useState([])
     useEffect(() => {
         const fetchProdects = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/getproducts', {
+                const response = await fetch(`http://localhost:10000/api/getproducts`, {
                     method: 'GET'
                 })
                 if (response.ok) {

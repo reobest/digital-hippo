@@ -40,8 +40,7 @@ const ProductForm = () => {
             images: null,
             price: "",
         },
-    })
-
+    }) 
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         

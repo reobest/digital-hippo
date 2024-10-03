@@ -143,9 +143,13 @@ app.prepare().then(() => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   })
-  server.get('/api/cartitems', async (req, res) => {
+  server.post('/api/cartitems', async (req, res) => {
+    const {email} = req.body 
+    console.log("email is :",email);
+    console.log(typeof email);
+    
     try {
-      const products = await Product.find({ "addToCart": true })
+      const products = await Product.find({ "addToCart": true, "userEmail": email })
       res.status(200).json({ products })
     } catch (error) {
       console.log(error);
