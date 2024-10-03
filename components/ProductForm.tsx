@@ -59,7 +59,7 @@ const ProductForm = () => {
             formData.append('userEmail', userEmail);
         }    
         try {
-            const response = await fetch('http://localhost:3000/api/add-product', {
+            const response = await fetch('https://digital-hippo-lc7e.onrender.com/api/add-product', {
                 method: 'POST',
                 body: formData,
             })

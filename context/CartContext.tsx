@@ -34,7 +34,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 setCart(prev => [...prev, product])
             }
             try {
-                const response = await fetch('http://localhost:3000/api/addtocart', {
+                const response = await fetch('https://digital-hippo-lc7e.onrender.com/api/addtocart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

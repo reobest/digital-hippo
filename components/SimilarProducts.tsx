@@ -7,7 +7,7 @@ const SimilarProducts = () => {
     useEffect(() => {
         const fetchSimilarProjects = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/fetchsimilar', {
+                const response = await fetch('https://digital-hippo-lc7e.onrender.com/api/fetchsimilar', {
                     method: 'GET'
                 })
                 const data = await response.json()

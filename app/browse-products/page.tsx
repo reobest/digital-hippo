@@ -8,7 +8,7 @@ const BrowseProducts = () => {
     useEffect(() => {
         const fetchAllProjects = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/fetchallproducts', {
+                const response = await fetch('https://digital-hippo-lc7e.onrender.com/fetchallproducts', {
                     method: 'GET'
                 })
                 const data = await response.json()

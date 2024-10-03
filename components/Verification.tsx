@@ -17,7 +17,7 @@ const Verification = () => {
       if (!token) return;
 
       try {
-        const response = await fetch('/api/verify-email', {
+        const response = await fetch('https://digital-hippo-lc7e.onrender.com/api/verify-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -29,7 +29,7 @@ const Success = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/cartitems");
+        const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/cartitems");
         const data = await response.json();
         setProducts(data.products);
 

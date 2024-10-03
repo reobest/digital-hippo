@@ -31,7 +31,7 @@ const Cart = ({ open, onClose }: CartProps) => {
         console.log(JSON.stringify(id));
 
         try {
-            const response = await fetch("http://localhost:3000/api/removefromcart", {
+            const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/removefromcart", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Set the Content-Type header
@@ -49,7 +49,7 @@ const Cart = ({ open, onClose }: CartProps) => {
     }
     const setQuantity = async (id: string, change: number) => {
         try {
-            const response = await fetch('http://localhost:3000/api/increasequantity', {
+            const response = await fetch('https://digital-hippo-lc7e.onrender.com/api/increasequantity', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const Cart = ({ open, onClose }: CartProps) => {
         }
         const addToCart = async () => {
             try {
-                const response = await fetch("http://localhost:3000/api/cartitems", {
+                const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/cartitems", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
     useEffect(() => {
         const fetchProject = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/fetchproduct?id=${params.id}`, {
+                const response = await fetch(`https://digital-hippo-lc7e.onrender.com/api/fetchproduct?id=${params.id}`, {
                     method: 'GET'
                 })
                 const data = await response.json()
