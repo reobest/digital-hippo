@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Product from '@/components/Product'
 import Link from 'next/link'
 interface ProductType {
@@ -35,16 +35,17 @@ const FourProducts = () => {
         }
         fetchProdects()
     }, [])
-    console.log(products);
     return (
         <div className='w-full h-[400px] p-4'>
             <div className='w-full  flex justify-between my-5'>
                 <h1 className='text-3xl font-bold'>Brand New</h1>
                 <Link href="/browse-products"><button className='text-blue-600'>shop the collection ...</button></Link>
             </div>
-            <div className='w-full flex justify-center gap-5'>
+            <div className='w-full flex justify-center gap-5 overflow-scroll'>
                 {products && products?.map((product: ProductType) => {
-                    return <Product product={product} key={product._id} />
+                    return <Fragment key={product._id}>
+                    <Product product={product} />
+                    </Fragment>
                 })}
             </div>
         </div>

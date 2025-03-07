@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import SimilarProducts from '@/components/SimilarProducts'
 import { ProductType } from '@/lib/types'
 import { useCart } from '@/context/CartContext'
+import { log } from 'console'
 const ProductDetails = ({ params }: { params: { id: string } }) => {
     const { addToCart } = useCart()
     const [product, setProduct] = useState<ProductType | null>(null)
@@ -31,6 +32,8 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
         }
         fetchProject()
     }, [])
+    console.log(product);
+    
 
     return (
         <div className='w-full flex flex-col items-center md:justify-center'>

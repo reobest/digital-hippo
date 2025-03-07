@@ -13,6 +13,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { X } from 'lucide-react'
+import { log } from 'node:console';
 interface CartProps {
     open: boolean;
     onClose: () => void;
@@ -23,7 +24,6 @@ const Cart = ({ open, onClose }: CartProps) => {
     const { cartChanged, setCartChanged, setCart, cart } = useCart()
     const [number, setNumber] = useState<{ [id: string]: number }>({});
     const [products, setProducts] = useState([])
-    console.log(products);
     const totalPrice = products?.reduce((total: any, product: any) => total + (product.price * product.quantity), 0);
     const itemsCount = products ? products.length : 0
 
@@ -67,13 +67,14 @@ const Cart = ({ open, onClose }: CartProps) => {
             console.error('Error updating quantity:', error);
         }
     };
-
+    
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const storedEmail = localStorage.getItem('email');
             setEmail(storedEmail);
         }
         const addToCart = async () => {
+            
             try {
                 const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/cartitems", {
                     method: 'POST',
@@ -83,17 +84,18 @@ const Cart = ({ open, onClose }: CartProps) => {
                     body: JSON.stringify({ email }),
                 })
                 const data = await response.json()
+                console.log('data',data);
                 setProducts(data.products)
             } catch (error) {
                 console.log(error);
-
+                
             }
         }
         if (email) {
             addToCart()
         }
     }, [cartChanged, email])
-
+    
     return (
         <Sheet open={open} onOpenChange={onClose}>
             <SheetTrigger asChild>

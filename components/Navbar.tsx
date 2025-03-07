@@ -42,8 +42,8 @@ const Navbar = () => {
         <div className='w-full h-[80px] p-4 flex justify-between'>
             {openStates.uiKits && <Featured prop={UI_Kits} />}
             {openStates.icons && <Featured prop={Icons} />}
-            <div className='flex items-center justify-between w-[300px] ml-12'>
-                <Image src='/logo.png' width={40} height={30} alt='logo' />
+            <div className='flex items-center justify-between w-[300px] sm:ml-0 ml-15'>
+                <Image src='/logo.png' width={40} height={30} alt='logo'/>
                 <div className='hidden md:flex items-center justify-between w-[200px] ml-7'>
                     <Button className='flex items-center w-[100px] justify-between
                  bg-transparent rounded-md hover:bg-slate-100 text-black' onClick={() => handleClick('uiKits')}>
@@ -71,7 +71,7 @@ const Navbar = () => {
                     <Link href='/add-product'><Button className='sm:w-[80px] md:w-[100px] text-xs'>Add product</Button></Link>
                     <Button onClick={handleLogOut} className='sm:w-[80px] md:w-[100px] text-xs'>Log out</Button>
                 </div>}
-                <button className='w-[100px] flex items-center'>
+                <button className='sm:w-[50px] md:w-[100px] flex items-center'>
                     <ShoppingCart strokeWidth={1.5} onClick={handleCartClick} />
                 </button>
             </div>

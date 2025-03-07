@@ -41,7 +41,6 @@ const SignIn= () => {
             if (response.ok) {
               localStorage.setItem('token', data.token);
               localStorage.setItem('email', data.email);
-              window.location.reload()
               router.push('/')
               console.log('Sign-in successful:', data);
               // Handle successful sign-in, e.g., redirect or save token
@@ -54,9 +53,9 @@ const SignIn= () => {
           }
     }
     return (
-        <div className="w-[30%]">
+        <div className="w-[90%] md:w-[30%]">
             <Form {...form} >
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                         control={form.control}
                         name="email"

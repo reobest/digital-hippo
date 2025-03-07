@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { generateRandomToken } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 const formSchema = z.object({
     email: z.string().min(2).max(50),
     password: z.string().min(8, { message: "at least 8 charachters" }).max(100)
@@ -28,7 +29,7 @@ const SignUpForm = () => {
         },
     })
     
-    
+    const router = useRouter()
     const  onSubmit = async (values: z.infer<typeof formSchema>) => {
         const token  = generateRandomToken()
         try {
@@ -43,6 +44,7 @@ const SignUpForm = () => {
             const data = await response.json();
             if (response.ok) {
                 console.log(data); // Handle success (e.g., show a success message)
+                router.push(`/virification?token=${token}`)
             } else {
                 console.error(data); // Handle error (e.g., show an error message)
             }
@@ -51,7 +53,7 @@ const SignUpForm = () => {
         }
     }
     return (
-        <div className="w-[30%]">
+        <div className="w-[90%] md:w-[30%]">
             <Form {...form} >
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField

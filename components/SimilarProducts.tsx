@@ -24,7 +24,7 @@ const SimilarProducts = () => {
         <div className='w-full mt-[150px] p-4'>
             <h1 className='text-2xl font-bold'>Similar Icons</h1>
             <p className='text-xs text-slate-800 mt-3'>Browse similar high quality icons just like My product </p>
-            <div className='w-full flex px-2 gap-2 mt-7'>
+            <div className='w-full flex px-2 gap-2 mt-7 overflow-scroll'>
                 {similarProducts && similarProducts?.map((product: ProductType) => {
                     return <Product product={product} key={product._id} />
                 })}

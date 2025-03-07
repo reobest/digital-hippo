@@ -130,6 +130,8 @@ app.prepare().then(() => {
 
     try {
       const product = await Product.findById(productId);
+      console.log(productId);
+      
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
       }
@@ -137,7 +139,7 @@ app.prepare().then(() => {
       product.addToCart = true;
       await product.save();
 
-      res.status(200).json({ message: 'Product added to cart' });
+      res.status(200).json({ message: product });
     } catch (error) {
       console.error('Error updating product:', error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -146,8 +148,6 @@ app.prepare().then(() => {
   server.post('/api/cartitems', async (req, res) => {
     const {email} = req.body 
     console.log("email is :",email);
-    console.log(typeof email);
-    
     try {
       const products = await Product.find({ "addToCart": true, "userEmail": email })
       res.status(200).json({ products })
