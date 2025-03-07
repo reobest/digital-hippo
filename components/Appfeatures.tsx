@@ -2,7 +2,6 @@ import React from 'react'
 import { Features } from '@/constants'
 const Appfeatures = async () => {
     const MONGODB_Uri = process.env.MONGODB_URI;
-    console.log(MONGODB_Uri);
     return (
         <div className='w-full flex flex-wrap justify-center items-center  gap-12 bg-slate-100'>
             {Features.map((feature) => {

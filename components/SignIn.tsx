@@ -42,7 +42,6 @@ const SignIn= () => {
               localStorage.setItem('token', data.token);
               localStorage.setItem('email', data.email);
               router.push('/')
-              console.log('Sign-in successful:', data);
               // Handle successful sign-in, e.g., redirect or save token
             } else {
               console.error('Sign-in error:', data);

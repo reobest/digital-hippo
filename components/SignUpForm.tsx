@@ -42,8 +42,7 @@ const SignUpForm = () => {
             });
 
             const data = await response.json();
-            if (response.ok) {
-                console.log(data); // Handle success (e.g., show a success message)
+            if (response.ok) { // Handle success (e.g., show a success message)
                 router.push(`/virification?token=${token}`)
             } else {
                 console.error(data); // Handle error (e.g., show an error message)

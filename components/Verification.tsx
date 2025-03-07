@@ -10,8 +10,6 @@ const Verification = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log(token);
-
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) return;

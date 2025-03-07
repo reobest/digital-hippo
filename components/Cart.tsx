@@ -28,8 +28,6 @@ const Cart = ({ open, onClose }: CartProps) => {
     const itemsCount = products ? products.length : 0
 
     const handleremoveCrat = async (id: string) => {
-        console.log(JSON.stringify(id));
-
         try {
             const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/removefromcart", {
                 method: 'POST',
@@ -67,35 +65,38 @@ const Cart = ({ open, onClose }: CartProps) => {
             console.error('Error updating quantity:', error);
         }
     };
-    
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const storedEmail = localStorage.getItem('email');
             setEmail(storedEmail);
         }
         const addToCart = async () => {
-            
-            try {
-                const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/cartitems", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email }),
-                })
-                const data = await response.json()
-                console.log('data',data);
-                setProducts(data.products)
-            } catch (error) {
-                console.log(error);
-                
+            const urls = ["https://digital-hippo-lc7e.onrender.com/api/cartitems", 'http://localhost:3000/api/cartitems']
+
+            for (const url of urls) {
+                try {
+
+                    const response = await fetch(`${url}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email }),
+                    })
+                    const data = await response.json()
+                    setProducts(data.products)   
+                } catch (error) {
+                    console.log(error);
+
+                }
             }
         }
         if (email) {
             addToCart()
         }
     }, [cartChanged, email])
-    
+
     return (
         <Sheet open={open} onOpenChange={onClose}>
             <SheetTrigger asChild>

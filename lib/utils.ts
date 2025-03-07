@@ -16,4 +16,4 @@ export function cn(...inputs: ClassValue[]) {
 
 // Example usage
 const token = generateRandomToken(); // 16 bytes = 32 hex characters
-// console.log('Random Token:', token);
+

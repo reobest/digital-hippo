@@ -14,7 +14,6 @@ const multer = require('multer')
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const MONGODB_Uri = process.env.MONGODB_URI;
-console.log(process.env.MONGODB_URI);
 /////////////////////////////////////
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -130,8 +129,6 @@ app.prepare().then(() => {
 
     try {
       const product = await Product.findById(productId);
-      console.log(productId);
-      
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
       }
@@ -147,10 +144,9 @@ app.prepare().then(() => {
   })
   server.post('/api/cartitems', async (req, res) => {
     const {email} = req.body 
-    console.log("email is :",email);
     try {
-      const products = await Product.find({ "addToCart": true, "userEmail": email })
-      res.status(200).json({ products })
+        const products =  email ? await Product.find({ "addToCart": true, "userEmail": { $ne: email } }) : []
+      res.status(200).json({ products,email:email })
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -159,7 +155,6 @@ app.prepare().then(() => {
   server.post('/api/add-product', upload.array('images'), async (req, res) => {
     const { name, productDetails, price, category, userEmail } = req.body;
     const images = req.files;
-    console.log('Received files:', images);
     if (!images || images.length === 0) {
       return res.status(400).json({ message: 'No files uploaded' });
     }
@@ -235,7 +230,6 @@ app.prepare().then(() => {
   })
   server.post('/api/verify-email', async (req, res) => {
     const { token } = req.body
-    console.log(token + "i ama rayan");
     try {
       // Find the user with the given token
       const user = await User.findOne({ token });
@@ -367,8 +361,6 @@ app.prepare().then(() => {
       const sendMail = async (transporter, mailOptions) => {
         try {
           await transporter.sendMail(mailOptions)
-          console.log("email was sent succseesfully");
-
         } catch (error) {
           console.log(error);
 

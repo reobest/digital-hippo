@@ -25,7 +25,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             setEmail(storedEmail);
         }
     }, []);
-    console.log(cart);
 
     const addToCart = async (product: ProductType) => {
         const isEmail = product.userEmail == email;

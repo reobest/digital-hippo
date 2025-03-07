@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { Card, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import {
     Carousel,
     CarouselContent,
@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button'
 import SimilarProducts from '@/components/SimilarProducts'
 import { ProductType } from '@/lib/types'
 import { useCart } from '@/context/CartContext'
-import { log } from 'console'
 const ProductDetails = ({ params }: { params: { id: string } }) => {
     const { addToCart } = useCart()
     const [product, setProduct] = useState<ProductType | null>(null)
@@ -32,9 +31,6 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
         }
         fetchProject()
     }, [])
-    console.log(product);
-    
-
     return (
         <div className='w-full flex flex-col items-center md:justify-center'>
             <div className='sm:w-[400px] lg:w-[900px] flex flex-col lg:flex-row gap-3 mt-[50px]'>

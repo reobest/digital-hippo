@@ -67,7 +67,6 @@ const ProductForm = () => {
                 router.push('/')
             }
             const data = await response.json();
-            console.log('Response from server:', data);
         } catch (error) {
             console.log(error);
 

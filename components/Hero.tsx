@@ -12,8 +12,6 @@ const Hero = () => {
                 throw new Error(`HTTP error! status: ${data.status}`);
             }
             const res = await data.json();
-            console.log(res);
-
         } catch (error) {
             console.log(error);
 
