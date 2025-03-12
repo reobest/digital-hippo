@@ -16,7 +16,12 @@ import { useCart } from '@/context/CartContext'
 const ProductDetails = ({ params }: { params: { id: string } }) => {
     const { addToCart } = useCart()
     const [product, setProduct] = useState<ProductType | null>(null)
+    const [isToken, setIsToken] = useState<String>(false)
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            setIsToken(true)
+        }
         const fetchProject = async () => {
             try {
                 const response = await fetch(`https://digital-hippo-lc7e.onrender.com/api/fetchproduct?id=${params.id}`, {
@@ -43,7 +48,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
                         <Check strokeWidth={1.25} className='text-green-500' />
                         Eligable for instant delivery
                     </p>
-                    <Button onClick={ () => product && addToCart(product)}>Add to cart</Button>
+                    {isToken ? <Button onClick={() => product && addToCart(product)}>Add to cart</Button> : <p className="text-white bg-red-500 p-3 rounded-md text-center">Please Sign In or Signup</p> }
                     <p className='flex gap-4'>
                         <Shield strokeWidth={0.5} />
                         30 Days return guarantee

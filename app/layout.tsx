@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { CartProvider } from "@/context/CartContext";
+import { ContextWrapper } from "../context/UpdatingContext";
+import { CartProvider } from "../context/CartContext";
 import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`w-full${inter.className}`}>
-        <CartProvider>
-          <Navbar />
-          {children}
-        </CartProvider>
-        <Footer/>
+        <ContextWrapper>
+          <CartProvider>
+            <Navbar />
+            {children}
+          </CartProvider>
+          <Footer />
+        </ContextWrapper>
       </body>
-    </html>
+    </html >
   );
 }

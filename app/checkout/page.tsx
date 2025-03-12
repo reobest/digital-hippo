@@ -9,27 +9,39 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || ""
 const Checkout = () => {
     const router = useRouter()
     const [products, setProducts] = useState([]);
+    const [email, setEmail] = useState<string | null>(null);
     const [totalAmount, setTotalAmount] = useState(0);
 
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedEmail = localStorage.getItem('email');
+            setEmail(storedEmail);
+        }
         const fetchCartItems = async () => {
+            console.log(email);
             try {
-                const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/cartitems");
+                const response = await fetch("https://digital-hippo-lc7e.onrender.com/api/cartitems", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                })
                 const data = await response.json();
                 setProducts(data.products);
-
-                const subtotal  = data.products.reduce((acc : any, product : any) => acc + (product.price * product.quantity), 0);
+                const subtotal = data.products.reduce((acc: any, product: any) => acc + (product.price * product.quantity), 0);
                 setTotalAmount(subtotal + 1); // Adding $1.00 transaction fee
             } catch (error) {
                 console.error('Error fetching cart items:', error);
             }
         };
-
-        fetchCartItems();
-    }, []);
+        if (email) {
+            fetchCartItems()
+        }  
+    }, [email]);
 
     const handleCheckout = async () => {
-        const stripe : any = await stripePromise;
+        const stripe: any = await stripePromise;
 
         try {
             const response = await fetch('/api/create-payment-intent', {
@@ -37,7 +49,7 @@ const Checkout = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ products ,amount:totalAmount*100}), // Amount in cents
+                body: JSON.stringify({ products, amount: totalAmount * 100 }), // Amount in cents
             });
             const { url } = await response.json();
             router.push(`${url}`)
@@ -50,7 +62,7 @@ const Checkout = () => {
         <div className='w-full flex items-center h-screen justify-center'>
             <div className='flex flex-wrap justify-center gap-[80px]'>
                 <div className='sm:w-[300px] md:w-[400px] lg:w-[600px] h-[300px] overflow-y-scroll mt-4'>
-                    {products.map((product : any) => (
+                    {products.map((product: any) => (
                         <div key={product._id} className='w-full h-[80px] flex justify-between'>
                             <div className='w-[250px] h-full flex gap-3 items-center'>
                                 <div className="h-full">

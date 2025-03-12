@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -12,14 +12,16 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useRouter  } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
+import { useUpdate } from "../context/UpdatingContext"
 const formSchema = z.object({
     email: z.string().min(2).max(50),
     password: z.string().min(8, { message: "at least 8 charachters" }).max(100)
 })
-const SignIn= () => {
-    const router  = useRouter()
+const SignIn = () => {
+    const { token, setToken } = useUpdate()
+    const router = useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -27,29 +29,31 @@ const SignIn= () => {
             password: "",
         },
     })
-    const  onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const response = await fetch('https://digital-hippo-lc7e.onrender.com/api/signin', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(values),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
             });
-      
+
             const data = await response.json();
             if (response.ok) {
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('email', data.email);
-              router.push('/')
-              // Handle successful sign-in, e.g., redirect or save token
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('email', data.email);
+                const storedToken = localStorage.getItem('token');
+                setToken(storedToken);
+                router.back()
+                // Handle successful sign-in, e.g., redirect or save token
             } else {
-              console.error('Sign-in error:', data);
-              // Handle sign-in error
+                console.error('Sign-in error:', data);
+                // Handle sign-in error
             }
-          } catch (error) {
+        } catch (error) {
             console.error('Error:', error);
-          }
+        }
     }
     return (
         <div className="w-[90%] md:w-[30%]">

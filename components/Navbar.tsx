@@ -8,10 +8,11 @@ import { UI_Kits, Icons } from '@/constants';
 import Featured from './Featured';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
+import { useUpdate } from '@/context/UpdatingContext'
 const Navbar = () => {
     const router = useRouter();
-    const [token, setToken] = useState<string | null>(null);
+    const { token, setToken } = useUpdate()
+    // const [token, setToken] = useState<string | null>(null);
     const [openStates, setOpenStates] = useState<{ uiKits: boolean, icons: boolean }>({
         uiKits: false,
         icons: false
@@ -35,7 +36,7 @@ const Navbar = () => {
     const handleLogOut = () => {
         localStorage.removeItem('token');
         setToken(null);  // Update state
-        router.push('/');
+        router.back();
     };
 
     return (
@@ -43,7 +44,7 @@ const Navbar = () => {
             {openStates.uiKits && <Featured prop={UI_Kits} />}
             {openStates.icons && <Featured prop={Icons} />}
             <div className='flex items-center justify-between w-[300px] sm:ml-0 ml-15'>
-                <Image src='/logo.png' width={40} height={30} alt='logo'/>
+                <Image src='/logo.png' width={40} height={30} alt='logo' onClick={() => router.push('/')}/>
                 <div className='hidden md:flex items-center justify-between w-[200px] ml-7'>
                     <Button className='flex items-center w-[100px] justify-between
                  bg-transparent rounded-md hover:bg-slate-100 text-black' onClick={() => handleClick('uiKits')}>
