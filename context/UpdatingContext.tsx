@@ -1,6 +1,9 @@
 "use client"
 import React,{useState,useContext,createContext} from 'react'
-const UpdateContext = createContext(undefined)
+const UpdateContext = createContext<{
+    token: string | null;
+    setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  } | undefined>(undefined);
 
 export const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
