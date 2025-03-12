@@ -16,7 +16,7 @@ import { useCart } from '@/context/CartContext'
 const ProductDetails = ({ params }: { params: { id: string } }) => {
     const { addToCart } = useCart()
     const [product, setProduct] = useState<ProductType | null>(null)
-    const [isToken, setIsToken] = useState<String>(false)
+    const [isToken, setIsToken] = useState<Boolean>(false)
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
